@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Taxi.web.Data.Entities;
 
@@ -19,12 +20,12 @@ namespace Taxi.Web.Data.Entities
         public DateTime StartDateLocal => StartDate.ToLocalTime();
 
         [DataType(DataType.DateTime)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "End Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}", ApplyFormatInEditMode = false)]
         public DateTime? EndDate { get; set; }
 
         [DataType(DataType.DateTime)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "End Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm}", ApplyFormatInEditMode = false)]
         public DateTime? EndDateLocal => EndDate?.ToLocalTime();
 
@@ -47,5 +48,7 @@ namespace Taxi.Web.Data.Entities
         public string Remarks { get; set; }
 
         public TaxiEntity Taxi { get; set; }
+
+        public ICollection<TripDetailEntity> TripDetails { get; set; }
     }
 }
