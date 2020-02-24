@@ -33,8 +33,8 @@ namespace Taxi.web.Controllers
                 return NotFound();
             }
 
-            var taxiEntity = await _context.Taxis
-                .FirstOrDefaultAsync(m => m.Id == id);
+            TaxiEntity taxiEntity = await _context.Taxis.FindAsync(id);
+              
             if (taxiEntity == null)
             {
                 return NotFound();
@@ -43,23 +43,21 @@ namespace Taxi.web.Controllers
             return View(taxiEntity);
         }
 
-        // GET: Taxis/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Taxis/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Plaque")] TaxiEntity taxiEntity)
+        public async Task<IActionResult> Create(TaxiEntity taxiEntity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(taxiEntity);
-                await _context.SaveChangesAsync();
+                taxiEntity.Plaque = taxiEntity.Plaque.ToUpper();
+                _context.Taxis.Add(taxiEntity);
+                await _context.SaveChangesAsync();//commit
                 return RedirectToAction(nameof(Index));
             }
             return View(taxiEntity);
@@ -73,7 +71,7 @@ namespace Taxi.web.Controllers
                 return NotFound();
             }
 
-            var taxiEntity = await _context.Taxis.FindAsync(id);
+            TaxiEntity taxiEntity = await _context.Taxis.FindAsync(id);
             if (taxiEntity == null)
             {
                 return NotFound();
@@ -86,7 +84,7 @@ namespace Taxi.web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Plaque")] TaxiEntity taxiEntity)
+        public async Task<IActionResult> Edit(int id, TaxiEntity taxiEntity)
         {
             if (id != taxiEntity.Id)
             {
@@ -95,22 +93,9 @@ namespace Taxi.web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(taxiEntity);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TaxiEntityExists(taxiEntity.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                taxiEntity.Plaque = taxiEntity.Plaque.ToUpper();
+                _context.Update(taxiEntity);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(taxiEntity);
@@ -124,30 +109,18 @@ namespace Taxi.web.Controllers
                 return NotFound();
             }
 
-            var taxiEntity = await _context.Taxis
-                .FirstOrDefaultAsync(m => m.Id == id);
+            TaxiEntity taxiEntity = await _context.Taxis.FindAsync(id);
+               
             if (taxiEntity == null)
             {
                 return NotFound();
             }
 
-            return View(taxiEntity);
-        }
-
-        // POST: Taxis/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var taxiEntity = await _context.Taxis.FindAsync(id);
             _context.Taxis.Remove(taxiEntity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TaxiEntityExists(int id)
-        {
-            return _context.Taxis.Any(e => e.Id == id);
-        }
+       
     }
 }

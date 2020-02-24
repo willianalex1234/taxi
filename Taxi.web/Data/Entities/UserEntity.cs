@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using taxi.common.Enums;
-using Taxi.Common.Enums;
 using Taxi.web.Data.Entities;
 
 namespace Taxi.Web.Data.Entities
