@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Taxi.web.Data.Entities;
 using Taxi.Web.Data.Entities;
 
 namespace Taxi.web.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<UserEntity>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -12,6 +13,7 @@ namespace Taxi.web.Data
         public DbSet<TaxiEntity> Taxis { get; set; }
         public DbSet<TripEntity> Trips { get; set; }
         public DbSet<TripDetailEntity> TripDetails { get; set; }
+        public DbSet<UserGroupEntity> UserGroups { get; set; }
 
     }
 }
