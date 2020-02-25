@@ -14,6 +14,13 @@ namespace Taxi.web.Data
         public DbSet<TripEntity> Trips { get; set; }
         public DbSet<TripDetailEntity> TripDetails { get; set; }
         public DbSet<UserGroupEntity> UserGroups { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        {
+            base.OnModelCreating(modelbuilder);
+            modelbuilder.Entity<TaxiEntity>()
+            .HasIndex(t => t.Plaque)
+            .IsUnique();
 
+        }
     }
 }
